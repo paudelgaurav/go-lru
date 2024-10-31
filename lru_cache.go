@@ -14,18 +14,18 @@ type LRUCache struct {
 	keys        *list.List
 	data        map[any]ValueNode
 	maxCapacity int
-	lock        sync.RWMutex
+	mu          sync.RWMutex
 }
 
 func NewCache(maxCapacity int) LRUCache {
-	dataMap := make(map[any]ValueNode)
+	emptyMap := make(map[any]ValueNode)
 	l := list.New()
-	return LRUCache{keys: l, data: dataMap, maxCapacity: maxCapacity}
+	return LRUCache{keys: l, data: emptyMap, maxCapacity: maxCapacity}
 }
 
 func (c *LRUCache) Get(key any) (any, bool) {
-	c.lock.Lock()
-	defer c.lock.Unlock()
+	c.mu.Lock()
+	defer c.mu.Unlock()
 
 	valueNode, ok := c.data[key]
 	if !ok {
@@ -40,8 +40,8 @@ func (c *LRUCache) Get(key any) (any, bool) {
 }
 
 func (c *LRUCache) Add(key, value any) {
-	c.lock.Lock()
-	defer c.lock.Unlock()
+	c.mu.Lock()
+	defer c.mu.Unlock()
 
 	valueNode, ok := c.data[key]
 	// if key exists
@@ -72,8 +72,8 @@ func (c *LRUCache) Add(key, value any) {
 }
 
 func (c *LRUCache) Remove(key any) bool {
-	c.lock.Lock()
-	defer c.lock.Unlock()
+	c.mu.Lock()
+	defer c.mu.Unlock()
 
 	valueNode, ok := c.data[key]
 	if !ok {
@@ -87,16 +87,16 @@ func (c *LRUCache) Remove(key any) bool {
 }
 
 func (c *LRUCache) Len() int {
-	c.lock.RLock()
-	defer c.lock.RUnlock()
+	c.mu.RLock()
+	defer c.mu.RUnlock()
 
 	return c.keys.Len() // Wait for all goroutines to finish
 
 }
 
 func (c *LRUCache) Clear() {
-	c.lock.Lock()
-	defer c.lock.Unlock()
+	c.mu.Lock()
+	defer c.mu.Unlock()
 
 	c.keys.Init()
 	for k := range c.data {

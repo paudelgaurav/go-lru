@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestLRUCache_AddAndGet(t *testing.T) {
+func TestAddAndGet(t *testing.T) {
 	cache := NewCache(3)
 
 	// Test adding and retrieving elements
@@ -38,7 +38,7 @@ func TestLRUCache_AddAndGet(t *testing.T) {
 	}
 }
 
-func TestLRUCache_EvictionPolicy(t *testing.T) {
+func TestEvictionPolicy(t *testing.T) {
 	cache := NewCache(2)
 
 	// Add two elements
@@ -64,7 +64,7 @@ func TestLRUCache_EvictionPolicy(t *testing.T) {
 	}
 }
 
-func TestLRUCache_Remove(t *testing.T) {
+func TestRemove(t *testing.T) {
 	cache := NewCache(2)
 
 	cache.Add("key1", "value1")
@@ -82,7 +82,7 @@ func TestLRUCache_Remove(t *testing.T) {
 	}
 }
 
-func TestLRUCache_Len(t *testing.T) {
+func TestLen(t *testing.T) {
 	cache := NewCache(2)
 
 	cache.Add("key1", "value1")
@@ -99,7 +99,7 @@ func TestLRUCache_Len(t *testing.T) {
 	}
 }
 
-func TestLRUCache_Clear(t *testing.T) {
+func TestClear(t *testing.T) {
 	cache := NewCache(2)
 
 	cache.Add("key1", "value1")
@@ -117,7 +117,7 @@ func TestLRUCache_Clear(t *testing.T) {
 	}
 }
 
-func TestLRUCache_ConcurrentAccess(t *testing.T) {
+func TestConcurrentAccess(t *testing.T) {
 	cache := NewCache(100)
 
 	wg := sync.WaitGroup{}
@@ -148,7 +148,7 @@ func TestLRUCache_ConcurrentAccess(t *testing.T) {
 	}
 }
 
-func TestLRUCache_DuplicateEntry(t *testing.T) {
+func TestDuplicateEntry(t *testing.T) {
 	cache := NewCache(3)
 
 	cache.Add("key1", "value1")
